@@ -7,7 +7,7 @@ RUN mv `find . -name UtxBroadcaster-assembly-*.jar` /utx-broadcaster.jar
 CMD ["/usr/bin/java", "-jar", "/utx-broadcaster.jar"]
 
 FROM eclipse-temurin:11-jre-jammy
-ENV MAX_HEAP 1G
+ENV MAX_HEAP 256M
 ENV _JAVA_OPTIONS "-Xms${MAX_HEAP} -Xmx${MAX_HEAP}"
 COPY --from=builder /utx-broadcaster.jar /utx-broadcaster.jar
 ENTRYPOINT java -jar /utx-broadcaster.jar $0
