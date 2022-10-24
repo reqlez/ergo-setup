@@ -9,6 +9,8 @@ networks:
 volumes:
   ergo_redis:
     external: true
+  ergo_redis2:
+    external: true
 
 services:
   # Postgresql database
@@ -16,10 +18,11 @@ services:
     build:
       context: ./db
       args:
-        EXPLORER_VERSION: 9.17.2-M1
+        EXPLORER_VERSION: 9.17.3-M1
     # -- Uncomment and edit if wanting to set custom work_mem value
     # -- https://www.postgresql.org/docs/current/runtime-config-resource.html
     # command: ["postgres", "-c", "work_mem=4MB"]
+    shm_size: 13g
     environment:
       POSTGRES_DB: ergo
       POSTGRES_USER: ergo
@@ -50,10 +53,21 @@ services:
       - ergo_redis:/usr/local/etc/redis
     restart: unless-stopped
 
+  # Redis2
+  redis2:
+    image: redis:latest
+    restart: unless-stopped
+    command: ["redis-server"]
+    ports:
+      - "127.0.0.1:6380:6379"
+    volumes:
+      - ergo_redis2:/usr/local/etc/redis
+    restart: unless-stopped
+
   # Explorer backend chain-grabber
   grabber:
     build:
-      context: ./explorer-backend-9.17.2-M1
+      context: ./explorer-backend-9.17.3-M1
       dockerfile: chain-grabber.Dockerfile
     env_file:
       # Defines POSTGRES_PASSWORD
@@ -75,7 +89,7 @@ services:
   # Mempool tracker
   utx-tracker:
     build:
-      context: ./explorer-backend-9.17.2-M1
+      context: ./explorer-backend-9.17.3-M1
       dockerfile: utx-tracker.Dockerfile
     env_file:
       # Defines POSTGRES_PASSWORD
@@ -97,7 +111,7 @@ services:
   # Mempool broadcaster
   utx-broadcaster:
     build:
-      context: ./explorer-backend-9.17.2-M1
+      context: ./explorer-backend-9.17.3-M1
       dockerfile: utx-broadcaster.Dockerfile
     volumes:
       - ./explorer-backend.conf:/explorer-backend.conf:ro
@@ -116,7 +130,7 @@ services:
   # Explorer API
   api:
     build:
-      context: ./explorer-backend-9.17.2-M1
+      context: ./explorer-backend-9.17.3-M1
       dockerfile: explorer-api.Dockerfile
     env_file:
       # Defines POSTGRES_PASSWORD
@@ -127,6 +141,7 @@ services:
     links:
       - "db"
       - "redis"
+      - "redis2"
     restart: unless-stopped
     ports:
       - 8080:8080
