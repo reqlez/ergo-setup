@@ -2,7 +2,7 @@ FROM node:16-alpine as build
 RUN apk update && apk upgrade && apk add --no-cache curl python3 make g++
 RUN curl -L https://github.com/tosidrop/ergo-explorer-frontend/archive/refs/heads/master.tar.gz > /tmp/src.tar.gz && \
     tar -xf /tmp/src.tar.gz  -C /tmp && \
-    mv /tmp/explorer-frontend-master /app
+    mv /tmp/ergo-explorer-frontend-master /app
 WORKDIR /app
 ARG API
 ARG LABEL
