@@ -155,7 +155,7 @@ services:
     build:
       context: ./ui
       args:
-        # Set this to the url the api should be accessed at: http(s)://<your-ip-or-domain>:8080
+        # Set this to the url the api should be accessed at: http(s)://<your-ip-or-domain>
         API: http://localhost:8080
         # Name of the network (mainnet, testnet, devnet, ...)
         LABEL: "Mainnet"
@@ -163,6 +163,21 @@ services:
       - "api"
     ports:
       - 3000:3000
+    restart: unless-stopped
+    
+  # Explorer UI 2
+  ui2:
+    build:
+      context: ./ui
+      args:
+        # Set this to the url the api should be accessed at: http(s)://<your-ip-or-domain>
+        API: http://localhost:8080
+        # Name of the network (mainnet, testnet, devnet, ...)
+        LABEL: "Mainnet"
+    links:
+      - "api"
+    ports:
+      - 3001:3000
     restart: unless-stopped
   
   # GraphQL
