@@ -151,33 +151,35 @@ services:
         max-file: "3"
 
   # Explorer UI
-  ui:
+  tosi-ui:
     build:
       context: ./ui
+      dockerfile: ./ui/tosi.Dockerfile
       args:
         # Set this to the url the api should be accessed at: http(s)://<your-ip-or-domain>
-        API: http://localhost:8080
-        # Name of the network (mainnet, testnet, devnet, ...)
-        LABEL: "Mainnet"
-    links:
-      - "api"
-    ports:
-      - 3000:3000
-    restart: unless-stopped
-    
-  # Explorer UI 2
-  ui2:
-    build:
-      context: ./ui
-      args:
-        # Set this to the url the api should be accessed at: http(s)://<your-ip-or-domain>
-        API: http://localhost:8080
+        API: "https://ergo-explorer.tosidrop.io"
         # Name of the network (mainnet, testnet, devnet, ...)
         LABEL: "Mainnet"
     links:
       - "api"
     ports:
       - 3001:3000
+    restart: unless-stopped
+    
+  # Explorer UI 2
+  neta-ui:
+    build:
+      context: ./ui
+      dockerfile: ./ui/neta.Dockerfile
+      args:
+        # Set this to the url the api should be accessed at: http(s)://<your-ip-or-domain>
+        API: "https://ergo-explorer.anetabtc.io"
+        # Name of the network (mainnet, testnet, devnet, ...)
+        LABEL: "Mainnet"
+    links:
+      - "api"
+    ports:
+      - 3002:3000
     restart: unless-stopped
   
   # GraphQL
