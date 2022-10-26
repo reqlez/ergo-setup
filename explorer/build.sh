@@ -1,11 +1,11 @@
 #!/bin/sh
 set -e
 
-EXPLORER_VERSION=9.17.3-M1
+EXPLORER_VERSION=9.17.3-B1
 
 
 echo "Fetching explorer ${EXPLORER_VERSION} source"
-curl -L https://github.com/ergoplatform/explorer-backend/archive/refs/tags/${EXPLORER_VERSION}.tar.gz > explorer-backend-${EXPLORER_VERSION}.tar.gz
+curl -L https://github.com/reqlez/explorer-backend/archive/refs/tags/${EXPLORER_VERSION}.tar.gz > explorer-backend-${EXPLORER_VERSION}.tar.gz
 
 echo "Extracting explorer source"
 rm -rf explorer-backend/${EXPLORER_VERSION}
