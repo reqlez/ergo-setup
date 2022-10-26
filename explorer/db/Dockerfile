@@ -1,7 +1,7 @@
 FROM postgres:14
 
 ARG EXPLORER_VERSION
-ARG SCHEMA=https://raw.githubusercontent.com/ergoplatform/explorer-backend/$EXPLORER_VERSION/modules/explorer-core/src/main/resources/db/V9__Schema.sql
+ARG SCHEMA=https://raw.githubusercontent.com/reqlez/explorer-backend/$EXPLORER_VERSION/modules/explorer-core/src/main/resources/db/V9__Schema.sql
 
 ENV POSTGRES_DB ergo
 ENV POSTGRES_USER ergo
