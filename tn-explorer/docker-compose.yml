@@ -157,7 +157,7 @@ services:
       dockerfile: tosi.Dockerfile
       args:
         # Set this to the url the api should be accessed at: http(s)://<your-ip-or-domain>
-        API: "https://ergo-explorer.tosidrop.io"
+        API: "https://tn-ergo-explorer.tosidrop.io"
         # Name of the network (mainnet, testnet, devnet, ...)
         LABEL: "Testnet"
     links:
@@ -173,7 +173,7 @@ services:
       dockerfile: neta.Dockerfile
       args:
         # Set this to the url the api should be accessed at: http(s)://<your-ip-or-domain>
-        API: "https://ergo-explorer.anetabtc.io"
+        API: "https://tn-ergo-explorer.anetabtc.io"
         # Name of the network (mainnet, testnet, devnet, ...)
         LABEL: "Testnet"
     links:
