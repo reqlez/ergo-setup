@@ -8,8 +8,16 @@ Install [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](h
 ## Node
 
 ```
-# Volume and network expected by node compose file.
-docker volume create ergo_node
+# Setup volume ( or see alt setup )
+docker volume create ergo_node 
+# Alternative volume setup ------------------------------------
+sudo mkdir -p /var/lib/ergo_node/
+sudo chown 9052:9052 /var/lib/ergo_node/
+sudo chmod 770 /var/lib/ergo_node/
+# Modify node/Dockerfile to match /var/lib/ergo_node: path.
+# and comment out Volume: block -------------------------------
+
+# Setup network expected by node compose file.
 docker network create ergo-node
 
 # Starting the service
@@ -40,6 +48,7 @@ echo DB_USER_PWD=some-pw-you-can-choose >> db/db.secret
 
 # Create a named volume for Redis
 docker volume create ergo_redis
+docker volume create ergo_redis2
 
 # Start all services in one go...
 docker compose up -d --build
