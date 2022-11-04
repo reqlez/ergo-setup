@@ -14,8 +14,9 @@ docker volume create ergo_node
 sudo mkdir -p /var/lib/ergo_node/
 sudo chown 9052:9052 /var/lib/ergo_node/
 sudo chmod 770 /var/lib/ergo_node/
-# Modify node/Dockerfile to match /var/lib/ergo_node: path.
-# and comment out Volume: block -------------------------------
+# Modify node/docker-compose.yml to following vol path:
+# - /var/lib/ergo_node:/home/ergo/.ergo
+# and comment out Volumes: block -------------------------------
 
 # Setup network expected by node compose file.
 docker network create ergo-node
