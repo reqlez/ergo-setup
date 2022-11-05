@@ -2,14 +2,14 @@ version: "3.8"
 
 networks:
   default:
-    name: ergo-explorer
-  ergo-node:
+    name: tn-ergo-explorer
+  tn-ergo-node:
     external: true
 
 volumes:
-  ergo_redis:
+  tn_ergo_redis:
     external: true
-  ergo_redis2:
+  tn_ergo_redis2:
     external: true
 
 services:
@@ -22,7 +22,7 @@ services:
     # -- Uncomment and edit if wanting to set custom work_mem value
     # -- https://www.postgresql.org/docs/current/runtime-config-resource.html
     # command: ["postgres", "-c", "work_mem=4MB"]
-    shm_size: 13g
+    shm_size: 4g
     environment:
       POSTGRES_DB: ergo
       POSTGRES_USER: ergo
@@ -33,9 +33,9 @@ services:
       # Mapped volume for easier Postgres upgrades.
       # Make sure the path exists or edit it here.
       # See also readme_pg_upgrade.md
-      - /var/lib/explorer_pg/14/data:/var/lib/postgresql/data
+      - /var/lib/tn_explorer_pg/14/data:/var/lib/postgresql/data
     ports:
-      - "5433:5432"
+      - "5443:5432"
     restart: unless-stopped
     logging:
       options:
@@ -48,9 +48,9 @@ services:
     restart: unless-stopped
     command: ["redis-server"]
     ports:
-      - "127.0.0.1:6379:6379"
+      - "127.0.0.1:6389:6379"
     volumes:
-      - ergo_redis:/usr/local/etc/redis
+      - tn_ergo_redis:/usr/local/etc/redis
     restart: unless-stopped
 
   # Redis2
@@ -59,9 +59,9 @@ services:
     restart: unless-stopped
     command: ["redis-server"]
     ports:
-      - "127.0.0.1:6380:6379"
+      - "127.0.0.1:6390:6379"
     volumes:
-      - ergo_redis2:/usr/local/etc/redis
+      - tn_ergo_redis2:/usr/local/etc/redis
     restart: unless-stopped
 
   # Explorer backend chain-grabber
@@ -76,7 +76,7 @@ services:
       - ./explorer-backend.conf:/explorer-backend.conf:ro
     networks:
       - default
-      - ergo-node
+      - tn-ergo-node
     command: /explorer-backend.conf
     links:
       - "db"
@@ -98,7 +98,7 @@ services:
       - ./explorer-backend.conf:/explorer-backend.conf:ro
     networks:
       - default
-      - ergo-node
+      - tn-ergo-node
     command: /explorer-backend.conf
     links:
       - "db"
@@ -117,7 +117,7 @@ services:
       - ./explorer-backend.conf:/explorer-backend.conf:ro
     networks:
       - default
-      - ergo-node
+      - tn-ergo-node
     command: /explorer-backend.conf
     links:
       - "redis"
@@ -144,7 +144,7 @@ services:
       - "redis2"
     restart: unless-stopped
     ports:
-      - 8080:8080
+      - 8090:8080
     logging:
       options:
         max-size: "10m"
@@ -157,13 +157,13 @@ services:
       dockerfile: tosi.Dockerfile
       args:
         # Set this to the url the api should be accessed at: http(s)://<your-ip-or-domain>
-        API: "https://ergo-explorer.tosidrop.io"
+        API: "https://tn-ergo-explorer.tosidrop.io"
         # Name of the network (mainnet, testnet, devnet, ...)
-        LABEL: "Mainnet"
+        LABEL: "Testnet"
     links:
       - "api"
     ports:
-      - 3001:3000
+      - 3011:3000
     restart: unless-stopped
     
   # Explorer UI 2
@@ -173,13 +173,13 @@ services:
       dockerfile: neta.Dockerfile
       args:
         # Set this to the url the api should be accessed at: http(s)://<your-ip-or-domain>
-        API: "https://ergo-explorer.anetabtc.io"
+        API: "https://tn-ergo-explorer.anetabtc.io"
         # Name of the network (mainnet, testnet, devnet, ...)
-        LABEL: "Mainnet"
+        LABEL: "Testnet"
     links:
       - "api"
     ports:
-      - 3002:3000
+      - 3012:3000
     restart: unless-stopped
   
   # GraphQL
@@ -198,9 +198,9 @@ services:
       # database user name
       DB_USER_NAME: ergo
       # ergo node address and port
-      ERGO_NODE_ADDRESS: http://172.17.0.1:9053
+      ERGO_NODE_ADDRESS: http://172.17.0.1:9052
       # optional: MAINNET or TESTNET
-      NETWORK: MAINNET
+      NETWORK: TESTNET
       # optional: redis host address
       REDIS_HOST: redis
       # optional: redis host port
@@ -218,5 +218,5 @@ services:
       - "db"
       - "redis"
     ports:
-      - 3000:3000
+      - 3010:3000
     restart: unless-stopped
