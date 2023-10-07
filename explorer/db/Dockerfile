@@ -1,4 +1,4 @@
-FROM postgres:14
+FROM postgres:16
 
 ARG EXPLORER_VERSION
 ARG SCHEMA=https://raw.githubusercontent.com/reqlez/explorer-backend/$EXPLORER_VERSION/modules/explorer-core/src/main/resources/db/V9__Schema.sql
