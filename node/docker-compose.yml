@@ -22,6 +22,13 @@ services:
       - "9053:9053"
       - "9030:9030"
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "4"
+          memory: "6g"
+    environment:
+      - _JAVA_OPTIONS=-Xms4G -Xmx4G # HEAP: same values for best performance
     logging:
       options:
         max-size: "10m"
